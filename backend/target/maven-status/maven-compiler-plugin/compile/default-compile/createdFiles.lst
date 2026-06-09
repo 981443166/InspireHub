@@ -1,0 +1,13 @@
+com\inspirehub\InspireHubApplication.class
+com\inspirehub\common\ErrorCode.class
+com\inspirehub\annotation\ValidTypeValidator.class
+com\inspirehub\config\RedisConfig.class
+com\inspirehub\common\Result.class
+com\inspirehub\common\GlobalExceptionHandler.class
+com\inspirehub\config\MybatisPlusConfig.class
+com\inspirehub\annotation\ValidDomain.class
+com\inspirehub\config\CorsConfig.class
+com\inspirehub\annotation\ValidDomainValidator.class
+com\inspirehub\common\BusinessException.class
+com\inspirehub\annotation\ValidType.class
+com\inspirehub\config\AsyncConfig.class

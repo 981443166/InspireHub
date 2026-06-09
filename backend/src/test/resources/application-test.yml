@@ -1,0 +1,17 @@
+# 测试环境配置 (application-test.yml)
+# 集成测试用
+
+spring:
+  datasource:
+    url: jdbc:tc:postgresql:14:///inspirehub_test
+  # Redis 在集成测试中用 Testcontainers 或禁用缓存
+  cache:
+    type: none
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
+
+jwt:
+  secret: test-secret-key-do-not-use-in-production
+  expiration: 3600000  # 1 小时
