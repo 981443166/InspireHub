@@ -5,7 +5,7 @@
 ## Project
 
 - **定位**：设计师与开发者的灵感收藏工具，前后端分离 SPA
-- **前端**：Vite 5 + React 18 + TypeScript 5.3，Tailwind CSS 3.4 + shadcn/ui，Zustand + TanStack Query + React Router DOM 6.20
+- **前端**：Vite 8 + React 19 + TypeScript 6.0，Tailwind CSS 4 + shadcn/ui (base-ui)，Zustand + TanStack Query + React Router DOM 6
 - **后端**：Spring Boot 4.0.6 + JDK 25 + MyBatis-Plus 3.5.15（`mybatis-plus-spring-boot4-starter`）+ Spring Security 7 + PostgreSQL 14 + Redis 7
 - **入口**：后端 `com.inspirehub.InspireHubApplication`，前端 `src/main.tsx`
 

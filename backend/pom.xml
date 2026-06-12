@@ -100,6 +100,13 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- H2 内嵌数据库（开发/演示用，无需 PostgreSQL） -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
         <!-- ===== JWT (JJWT) ===== -->
         <!-- ⚠️ SB 4 默认 Jackson 3，但 JJWT 0.12.x 的 jjwt-jackson 依赖 Jackson 2 -->
         <!-- 暂用 jjwt-orgjson 替代序列化，避免 Jackson 2/3 冲突 -->
@@ -147,6 +154,13 @@
             <groupId>net.coobird</groupId>
             <artifactId>thumbnailator</artifactId>
             <version>${thumbnailator.version}</version>
+        </dependency>
+
+        <!-- ===== MinIO OSS 客户端 ===== -->
+        <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+            <version>8.5.14</version>
         </dependency>
 
         <!-- ===== DevTools (开发热重载) ===== -->

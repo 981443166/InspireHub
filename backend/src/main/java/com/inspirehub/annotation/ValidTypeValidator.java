@@ -9,7 +9,7 @@ import java.util.Set;
  */
 public class ValidTypeValidator implements ConstraintValidator<ValidType, String> {
 
-    private static final Set<String> VALID_TYPES = Set.of("link", "image", "code", "note");
+    private static final Set<String> VALID_TYPES = Set.of("link", "image", "code", "note", "html", "css");
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {

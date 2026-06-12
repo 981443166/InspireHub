@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InspireHub 剪藏</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 360px;
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #1A1B26;
+      color: #cdd6f4;
+      font-size: 13px;
+    }
+    .container { padding: 16px; }
+    h1 { font-size: 15px; color: #7AA2F7; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+    h1 svg { width: 20px; height: 20px; }
+
+    .field { margin-bottom: 10px; }
+    label { display: block; font-size: 11px; color: #9CA3AF; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+    input, textarea, select {
+      width: 100%;
+      padding: 7px 10px;
+      border-radius: 8px;
+      border: 1px solid #3A3B46;
+      background: #2A2B36;
+      color: #cdd6f4;
+      font-size: 13px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    input:focus, textarea:focus, select:focus { border-color: #7AA2F7; }
+    textarea { resize: vertical; min-height: 40px; }
+
+    .type-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+    .type-btn {
+      padding: 6px 4px;
+      border-radius: 8px;
+      border: 1px solid #3A3B46;
+      background: #2A2B36;
+      color: #9CA3AF;
+      font-size: 11px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+    .type-btn:hover { border-color: #7AA2F7; color: #cdd6f4; }
+    .type-btn.active { border-color: #7AA2F7; background: rgba(122,162,247,0.15); color: #7AA2F7; }
+    .type-btn svg { width: 14px; height: 14px; }
+
+    .domain-row { display: flex; gap: 4px; }
+    .domain-tag {
+      padding: 3px 10px;
+      border-radius: 20px;
+      border: 1px solid #3A3B46;
+      background: #2A2B36;
+      color: #9CA3AF;
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .domain-tag.active { border-color: #7AA2F7; background: rgba(122,162,247,0.15); color: #7AA2F7; }
+
+    .tag-input-row { display: flex; gap: 6px; }
+    .tag-input-row button {
+      padding: 7px 12px;
+      border-radius: 8px;
+      border: 1px solid #3A3B46;
+      background: #2A2B36;
+      color: #cdd6f4;
+      font-size: 12px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .tag-input-row button:hover { border-color: #7AA2F7; }
+    .tag-list { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+    .tag {
+      padding: 2px 8px;
+      border-radius: 20px;
+      background: rgba(122,162,247,0.15);
+      color: #7AA2F7;
+      font-size: 11px;
+      cursor: pointer;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .tag:hover { background: rgba(122,162,247,0.25); }
+    .tag .remove { font-size: 14px; line-height: 1; }
+
+    .btn-save {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      background: #7AA2F7;
+      color: #1A1B26;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 12px;
+      transition: background 0.2s;
+    }
+    .btn-save:hover { background: #5D8AE8; }
+    .btn-save:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .status { text-align: center; font-size: 12px; margin-top: 8px; min-height: 18px; }
+    .status.success { color: #A6E3A1; }
+    .status.error { color: #F38BA8; }
+
+    .settings-link { text-align: center; margin-top: 10px; }
+    .settings-link a { color: #9CA3AF; font-size: 11px; text-decoration: none; }
+    .settings-link a:hover { color: #7AA2F7; }
+
+    .no-config {
+      text-align: center;
+      padding: 40px 20px;
+      color: #9CA3AF;
+    }
+    .no-config h2 { color: #F38BA8; font-size: 14px; margin-bottom: 8px; }
+    .no-config p { font-size: 12px; margin-bottom: 16px; }
+    .no-config button {
+      padding: 8px 20px;
+      border-radius: 8px;
+      border: 1px solid #7AA2F7;
+      background: transparent;
+      color: #7AA2F7;
+      font-size: 13px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <!-- 未配置 -->
+  <div id="no-config" class="no-config" style="display:none">
+    <h2>⚠️ 未配置 API</h2>
+    <p>请先设置 InspireHub 服务器地址和登录 Token</p>
+    <button onclick="chrome.runtime.openOptionsPage()">打开设置</button>
+  </div>
+
+  <!-- 剪藏表单 -->
+  <div id="form" class="container" style="display:none">
+    <h1>
+      <svg viewBox="0 0 20 20" fill="currentColor"><path d="M6 7h8v1H6zm0 3h8v1H6zm0 3h5v1H6zm8-5v8l-2-2-2 2V8h4z"/><circle cx="15" cy="17" r="3" fill="#F38BA8"/><path d="M14 17h2M15 16v2" stroke="#fff" stroke-width="1"/></svg>
+      InspireHub 剪藏
+    </h1>
+
+    <div class="field">
+      <label>标题</label>
+      <input type="text" id="title" placeholder="灵感标题">
+    </div>
+
+    <div class="field">
+      <label>类型</label>
+      <div class="type-row" id="type-row"></div>
+    </div>
+
+    <div class="field">
+      <label>URL</label>
+      <input type="text" id="url" readonly>
+    </div>
+
+    <div class="field" id="code-field" style="display:none">
+      <label>代码内容</label>
+      <textarea id="code-content" placeholder="粘贴代码片段…"></textarea>
+    </div>
+
+    <div class="field" id="note-field" style="display:none">
+      <label>笔记内容</label>
+      <textarea id="note-content" placeholder="输入笔记…"></textarea>
+    </div>
+
+    <div class="field">
+      <label>领域</label>
+      <div class="domain-row" id="domain-row"></div>
+    </div>
+
+    <div class="field">
+      <label>标签</label>
+      <div class="tag-input-row">
+        <input type="text" id="tag-input" placeholder="输入标签后按回车">
+        <button id="tag-add-btn">添加</button>
+      </div>
+      <div class="tag-list" id="tag-list"></div>
+    </div>
+
+    <div class="field">
+      <label>备注</label>
+      <textarea id="notes" placeholder="Markdown 备注…"></textarea>
+    </div>
+
+    <button class="btn-save" id="save-btn">保存到 InspireHub</button>
+    <div class="status" id="status"></div>
+    <div class="settings-link"><a href="#" id="open-settings">⚙️ 设置</a></div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

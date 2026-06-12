@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InspireHub 扩展设置</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #1A1B26;
+      color: #cdd6f4;
+      padding: 40px;
+      min-height: 100vh;
+    }
+    .card {
+      max-width: 480px;
+      margin: 0 auto;
+      background: #2A2B36;
+      border: 1px solid #3A3B46;
+      border-radius: 16px;
+      padding: 32px;
+    }
+    h1 { font-size: 20px; color: #7AA2F7; margin-bottom: 24px; }
+    .field { margin-bottom: 20px; }
+    label { display: block; font-size: 12px; color: #9CA3AF; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+    input {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 1px solid #3A3B46;
+      background: #1A1B26;
+      color: #cdd6f4;
+      font-size: 14px;
+      font-family: monospace;
+    }
+    input:focus { border-color: #7AA2F7; outline: none; }
+    .hint { font-size: 11px; color: #9CA3AF; margin-top: 4px; }
+    button {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      background: #7AA2F7;
+      color: #1A1B26;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.2s;
+    }
+    button:hover { background: #5D8AE8; }
+    .status { text-align: center; font-size: 13px; margin-top: 12px; min-height: 20px; }
+    .status.success { color: #A6E3A1; }
+    .status.error { color: #F38BA8; }
+    .help { margin-top: 24px; padding-top: 20px; border-top: 1px solid #3A3B46; }
+    .help h2 { font-size: 13px; color: #9CA3AF; margin-bottom: 10px; }
+    .help ol { padding-left: 18px; font-size: 12px; color: #9CA3AF; line-height: 1.8; }
+    .help code { background: #1A1B26; padding: 1px 6px; border-radius: 4px; font-size: 11px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>⚙️ InspireHub 扩展设置</h1>
+
+    <div class="field">
+      <label>API 地址</label>
+      <input type="text" id="apiBase" placeholder="http://localhost:8080">
+      <div class="hint">InspireHub 后端服务器地址，例如 <code>http://localhost:8080</code></div>
+    </div>
+
+    <div class="field">
+      <label>登录 Token</label>
+      <input type="text" id="apiToken" placeholder="eyJhbGciOiJIUzM4NCJ9...">
+      <div class="hint">在 InspireHub 登录后，从浏览器 DevTools → Application → Local Storage 中复制 token 值</div>
+    </div>
+
+    <button id="save-btn">保存设置</button>
+    <div class="status" id="status"></div>
+
+    <div class="help">
+      <h2>📖 如何获取 Token？</h2>
+      <ol>
+        <li>打开 InspireHub 网页并登录</li>
+        <li>按 <code>F12</code> 打开开发者工具</li>
+        <li>进入 <code>Application</code> → <code>Local Storage</code> → 你的域名</li>
+        <li>复制 <code>token</code> 的值粘贴到上方</li>
+      </ol>
+    </div>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+services:
+  postgres:
+    image: postgres:14-alpine
+    environment:
+      POSTGRES_DB: inspirehub
+      POSTGRES_USER: inspire_user
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-inspire_pass}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  backend:
+    build: ./backend
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/inspirehub
+      SPRING_DATASOURCE_USERNAME: inspire_user
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-inspire_pass}
+      SPRING_REDIS_HOST: redis
+      JWT_SECRET: ${JWT_SECRET:-change-me-in-production}
+    ports:
+      - "8080:8080"
+    profiles:
+      - pg
+      - default
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:

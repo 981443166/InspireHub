@@ -1,0 +1,147 @@
+@import "tailwindcss";
+
+/* ===== Tailwind 4 @theme：注册所有 shadcn/ui + 自定义颜色（指向 CSS 变量） ===== */
+@theme {
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  --color-background: var(--bg);
+  --color-foreground: var(--fg);
+  --color-card: var(--card-bg);
+  --color-card-foreground: var(--card-fg);
+  --color-popover: var(--popover-bg);
+  --color-popover-foreground: var(--popover-fg);
+  --color-primary: var(--pri);
+  --color-primary-foreground: var(--pri-fg);
+  --color-secondary: var(--sec);
+  --color-secondary-foreground: var(--sec-fg);
+  --color-muted: var(--mut);
+  --color-muted-foreground: var(--mut-fg);
+  --color-accent: var(--acc);
+  --color-accent-foreground: var(--acc-fg);
+  --color-destructive: var(--des);
+  --color-destructive-foreground: var(--des-fg);
+  --color-border: var(--bdr);
+  --color-input: var(--inp);
+  --color-ring: var(--rng);
+
+  --color-surface: var(--srf);
+  --color-surface-card: var(--srf-card);
+  --color-surface-hover: var(--srf-hover);
+}
+
+/* ===== 深色主题（默认） ===== */
+:root {
+  --bg: #1A1B26;       --fg: #cdd6f4;
+  --card-bg: #2A2B36;  --card-fg: #cdd6f4;
+  --popover-bg: #2A2B36; --popover-fg: #cdd6f4;
+  --pri: #7AA2F7;      --pri-fg: #1A1B26;
+  --sec: #3A3B46;      --sec-fg: #cdd6f4;
+  --mut: #3A3B46;      --mut-fg: #9CA3AF;
+  --acc: #3A3B46;      --acc-fg: #cdd6f4;
+  --des: #F38BA8;      --des-fg: #cdd6f4;
+  --bdr: #3A3B46;      --inp: #3A3B46;
+  --rng: #7AA2F7;
+
+  --srf: #1A1B26;      --srf-card: #2A2B36;  --srf-hover: #3A3B46;
+}
+
+/* ===== 浅色主题 ===== */
+.light {
+  --bg: #F8F9FC;       --fg: #1A1B26;
+  --card-bg: #FFFFFF;  --card-fg: #1A1B26;
+  --popover-bg: #FFFFFF; --popover-fg: #1A1B26;
+  --pri: #4A6FCF;      --pri-fg: #FFFFFF;
+  --sec: #EBEEF5;      --sec-fg: #1A1B26;
+  --mut: #EFF1F5;      --mut-fg: #6B7280;
+  --acc: #EBEEF5;      --acc-fg: #1A1B26;
+  --des: #DC2626;      --des-fg: #FFFFFF;
+  --bdr: #D1D5DB;      --inp: #E5E7EB;
+  --rng: #4A6FCF;
+
+  --srf: #F8F9FC;      --srf-card: #FFFFFF;  --srf-hover: #EBEEF5;
+
+  /* 浅色模式下 text-white → 深色 */
+  --color-white: #1A1B26;
+}
+
+html, body {
+  background-color: var(--bg);
+  color: var(--fg);
+  margin: 0; padding: 0; height: 100%;
+}
+#root { height: 100%; }
+
+/* ===== 渐变按钮 ===== */
+.btn-glow {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 3px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+  color: #ffffff;
+  background-image: linear-gradient(144deg, #af40ff, #5b42f3 50%, #00ddeb);
+  border: 0;
+  border-radius: 8px;
+  box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  transition: all 0.3s;
+  text-decoration: none;
+}
+.btn-glow span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  height: 100%;
+  padding: 8px 18px;
+  border-radius: 6px;
+  background-color: rgb(5, 6, 45);
+  transition: 300ms;
+}
+.btn-glow:hover span {
+  background: none;
+}
+.btn-glow:active {
+  transform: scale(0.95);
+}
+
+/* 移动端悬浮大按钮 */
+.btn-glow-fab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  padding: 3px;
+  border-radius: 14px;
+  background-image: linear-gradient(144deg, #af40ff, #5b42f3 50%, #00ddeb);
+  box-shadow: rgba(151, 65, 252, 0.25) 0 15px 40px -5px;
+  cursor: pointer;
+  border: 0;
+  transition: all 0.3s;
+}
+.btn-glow-fab span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 11px;
+  background-color: rgb(5, 6, 45);
+  transition: 300ms;
+}
+.btn-glow-fab:hover span {
+  background: none;
+}
+.btn-glow-fab:active {
+  transform: scale(0.9);
+}

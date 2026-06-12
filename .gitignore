@@ -1,0 +1,21 @@
+# ===== IDE =====
+.idea/
+.vscode/
+*.iml
+
+# ===== Backend =====
+backend/target/
+backend/data/
+
+# ===== Frontend =====
+frontend/node_modules/
+frontend/dist/
+frontend/dev-dist/
+
+# ===== System =====
+.DS_Store
+Thumbs.db
+*.log
+
+# ===== GitNexus =====
+.gitnexus/
