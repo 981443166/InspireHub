@@ -17,7 +17,7 @@
     },
     "default_title": "保存到 InspireHub"
   },
-  "permissions": ["activeTab", "storage", "scripting"],
+  "permissions": ["activeTab", "storage", "scripting", "clipboardRead"],
   "host_permissions": ["<all_urls>"],
   "options_page": "options.html"
 }

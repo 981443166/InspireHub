@@ -108,6 +108,28 @@
     .btn-save:hover { background: #5D8AE8; }
     .btn-save:disabled { opacity: 0.5; cursor: not-allowed; }
 
+    .drop-zone {
+      border: 2px dashed #3A3B46;
+      border-radius: 12px;
+      padding: 24px;
+      text-align: center;
+      margin-bottom: 10px;
+      transition: all 0.2s;
+      cursor: pointer;
+      color: #9CA3AF;
+      font-size: 12px;
+    }
+    .drop-zone.drag-over { border-color: #7AA2F7; background: rgba(122,162,247,0.08); color: #7AA2F7; }
+    .drop-zone.has-image { border-style: solid; border-color: #A6E3A1; padding: 8px; }
+    .drop-zone img { max-width: 100%; max-height: 120px; border-radius: 8px; display: block; margin: 0 auto; }
+    .drop-zone .hint { font-size: 11px; opacity: 0.6; margin-top: 4px; }
+    .drop-zone .remove-img {
+      position: absolute; top: 4px; right: 4px;
+      width: 18px; height: 18px; border-radius: 50%;
+      background: rgba(0,0,0,0.6); color: #fff; border: none;
+      font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    }
+
     .status { text-align: center; font-size: 12px; margin-top: 8px; min-height: 18px; }
     .status.success { color: #A6E3A1; }
     .status.error { color: #F38BA8; }
@@ -157,6 +179,16 @@
     <div class="field">
       <label>类型</label>
       <div class="type-row" id="type-row"></div>
+    </div>
+
+    <!-- 图片拖拽区 -->
+    <div class="field" id="image-drop-field" style="display:none">
+      <label>图片</label>
+      <div class="drop-zone" id="drop-zone" style="position:relative">
+        <span class="hint">🖼️ 拖拽网页图片到这里<br>或按 Ctrl+V 粘贴</span>
+        <img id="drop-preview" style="display:none" />
+        <button class="remove-img" id="remove-img" style="display:none">✕</button>
+      </div>
     </div>
 
     <div class="field">

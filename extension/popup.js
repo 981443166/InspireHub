@@ -16,6 +16,7 @@ let apiToken = '';
 let selectedType = 'link';
 let selectedDomains = [];
 let tags = [];
+let droppedFile = null;  // 拖拽/粘贴的图片文件
 
 // ===== 初始化 =====
 document.addEventListener('DOMContentLoaded', async () => {
@@ -69,6 +70,38 @@ function renderTags() {
   ).join('');
 }
 
+// ===== 图片预览更新 =====
+function updateImagePreview(file) {
+  droppedFile = file;
+  const dz = document.getElementById('drop-zone');
+  const img = document.getElementById('drop-preview');
+  const hint = dz.querySelector('.hint');
+  const removeBtn = document.getElementById('remove-img');
+
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    img.src = e.target.result;
+    img.style.display = 'block';
+    hint.style.display = 'none';
+    removeBtn.style.display = 'flex';
+    dz.classList.add('has-image');
+  };
+  reader.readAsDataURL(file);
+}
+
+function clearImage() {
+  droppedFile = null;
+  const dz = document.getElementById('drop-zone');
+  const img = document.getElementById('drop-preview');
+  const hint = dz.querySelector('.hint');
+  const removeBtn = document.getElementById('remove-img');
+  img.src = '';
+  img.style.display = 'none';
+  hint.style.display = '';
+  removeBtn.style.display = 'none';
+  dz.classList.remove('has-image');
+}
+
 // ===== 绑定事件 =====
 function bindEvents() {
   // 类型点击
@@ -78,6 +111,7 @@ function bindEvents() {
     selectedType = btn.dataset.type;
     renderTypes();
     updateContentFields();
+    if (selectedType !== 'image') clearImage();
   });
 
   // 领域点击
@@ -105,6 +139,47 @@ function bindEvents() {
     renderTags();
   });
 
+  // ===== 图片拖拽 =====
+  const dz = document.getElementById('drop-zone');
+
+  dz.addEventListener('dragover', (e) => { e.preventDefault(); dz.classList.add('drag-over'); });
+  dz.addEventListener('dragleave', () => { dz.classList.remove('drag-over'); });
+
+  dz.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dz.classList.remove('drag-over');
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+      const file = files[0];
+      if (file.type.startsWith('image/')) {
+        updateImagePreview(file);
+      } else {
+        showStatus('⚠️ 请拖入图片文件', 'error');
+      }
+    }
+  });
+
+  // 点击删除图片
+  document.getElementById('remove-img').addEventListener('click', (e) => {
+    e.stopPropagation();
+    clearImage();
+  });
+
+  // ===== Ctrl+V 粘贴图片 =====
+  document.addEventListener('paste', (e) => {
+    if (selectedType !== 'image') return;
+    const items = e.clipboardData?.items;
+    if (!items) return;
+    for (const item of items) {
+      if (item.type.startsWith('image/')) {
+        e.preventDefault();
+        const file = item.getAsFile();
+        updateImagePreview(file);
+        break;
+      }
+    }
+  });
+
   // 保存
   document.getElementById('save-btn').addEventListener('click', save);
 
@@ -119,6 +194,7 @@ function bindEvents() {
 function updateContentFields() {
   document.getElementById('code-field').style.display = selectedType === 'code' ? 'block' : 'none';
   document.getElementById('note-field').style.display = selectedType === 'note' ? 'block' : 'none';
+  document.getElementById('image-drop-field').style.display = selectedType === 'image' ? 'block' : 'none';
 }
 
 // ===== 添加标签 =====
@@ -138,10 +214,42 @@ async function save() {
   const title = document.getElementById('title').value.trim();
   if (!title) return showStatus('请输入标题', 'error');
 
+  let content = '';
   const url = document.getElementById('url').value.trim();
-  let content = url;
-  if (selectedType === 'code') content = document.getElementById('code-content').value.trim();
-  if (selectedType === 'note') content = document.getElementById('note-content').value.trim();
+
+  if (selectedType === 'image') {
+    if (!droppedFile) return showStatus('请拖入或粘贴图片', 'error');
+    // 先上传图片
+    const formData = new FormData();
+    formData.append('file', droppedFile);
+
+    const btn = document.getElementById('save-btn');
+    btn.disabled = true;
+    btn.textContent = '上传中…';
+
+    try {
+      const uploadRes = await fetch(`${apiBase}/api/upload/image`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${apiToken}` },
+        body: formData,
+      });
+      if (!uploadRes.ok) throw new Error('图片上传失败');
+      const uploadData = await uploadRes.json();
+      content = uploadData.data.url;
+    } catch (err) {
+      showStatus(`❌ ${err.message}`, 'error');
+      btn.disabled = false;
+      btn.textContent = '保存到 InspireHub';
+      return;
+    }
+  } else if (selectedType === 'code') {
+    content = document.getElementById('code-content').value.trim();
+  } else if (selectedType === 'note') {
+    content = document.getElementById('note-content').value.trim();
+  } else {
+    content = url;
+  }
+
   if (!content) return showStatus('请输入内容', 'error');
 
   const notes = document.getElementById('notes').value.trim();
