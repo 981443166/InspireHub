@@ -257,7 +257,7 @@ export default function InspirationForm({ onSubmit, initial, loading }: Props) {
         </div>
       )}
 
-      <Button type="submit" className="w-full h-10 rounded-xl font-semibold tracking-wide bg-gradient-to-r from-purple-500 via-indigo-500 to-cyan-400 border-0 hover:from-purple-600 hover:via-indigo-600 hover:to-cyan-500 shadow-lg shadow-purple-500/20 transition-all duration-300" disabled={loading}>
+      <Button type="submit" className="w-full h-10 rounded-xl font-semibold tracking-wide shadow-lg shadow-black/5 transition-all duration-300" disabled={loading}>
         {loading ? (
           <><Loader2 className="size-4 animate-spin mr-2" /> 保存中…</>
         ) : initial ? "💾 保存修改" : "✨ 添加灵感"}

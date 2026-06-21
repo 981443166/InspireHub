@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-/* ===== Tailwind 4 @theme：注册所有 shadcn/ui + 自定义颜色（指向 CSS 变量） ===== */
 @theme {
   --font-sans: "Inter", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", monospace;
@@ -28,120 +27,155 @@
   --color-surface: var(--srf);
   --color-surface-card: var(--srf-card);
   --color-surface-hover: var(--srf-hover);
+
+  --animate-fade-in: fade-in 0.3s ease-out;
+  --animate-slide-up: slide-up 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-scale-in: scale-in 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* ===== 深色主题（默认） ===== */
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slide-up { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes scale-in { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+@keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+
+/* ===== 深色 ===== */
 :root {
-  --bg: #1A1B26;       --fg: #cdd6f4;
-  --card-bg: #2A2B36;  --card-fg: #cdd6f4;
-  --popover-bg: #2A2B36; --popover-fg: #cdd6f4;
-  --pri: #7AA2F7;      --pri-fg: #1A1B26;
-  --sec: #3A3B46;      --sec-fg: #cdd6f4;
-  --mut: #3A3B46;      --mut-fg: #9CA3AF;
-  --acc: #3A3B46;      --acc-fg: #cdd6f4;
-  --des: #F38BA8;      --des-fg: #cdd6f4;
-  --bdr: #3A3B46;      --inp: #3A3B46;
-  --rng: #7AA2F7;
+  --bg: #0D0E16;       --fg: #e1e2ea;
+  --card-bg: #161822;  --card-fg: #e1e2ea;
+  --popover-bg: #1E2030; --popover-fg: #e1e2ea;
+  --pri: #8FB4FF;      --pri-fg: #0D0E16;
+  --sec: #232538;      --sec-fg: #e1e2ea;
+  --mut: #232538;      --mut-fg: #888BA0;
+  --acc: #232538;      --acc-fg: #e1e2ea;
+  --des: #FF7B93;      --des-fg: #0D0E16;
+  --bdr: #252840;      --inp: #1E2030;
+  --rng: #8FB4FF;
 
-  --srf: #1A1B26;      --srf-card: #2A2B36;  --srf-hover: #3A3B46;
+  --srf: #0D0E16;      --srf-card: #161822;  --srf-hover: #1E2030;
 }
 
-/* ===== 浅色主题 ===== */
+/* ===== 浅色 ===== */
 .light {
-  --bg: #F8F9FC;       --fg: #1A1B26;
-  --card-bg: #FFFFFF;  --card-fg: #1A1B26;
-  --popover-bg: #FFFFFF; --popover-fg: #1A1B26;
-  --pri: #4A6FCF;      --pri-fg: #FFFFFF;
-  --sec: #EBEEF5;      --sec-fg: #1A1B26;
-  --mut: #EFF1F5;      --mut-fg: #6B7280;
-  --acc: #EBEEF5;      --acc-fg: #1A1B26;
-  --des: #DC2626;      --des-fg: #FFFFFF;
-  --bdr: #D1D5DB;      --inp: #E5E7EB;
-  --rng: #4A6FCF;
+  --bg: #F6F7FB;       --fg: #111318;
+  --card-bg: #FFFFFF;  --card-fg: #111318;
+  --popover-bg: #FFFFFF; --popover-fg: #111318;
+  --pri: #3D6BE0;      --pri-fg: #FFFFFF;
+  --sec: #EEF0F6;      --sec-fg: #111318;
+  --mut: #F2F3F7;      --mut-fg: #6E7180;
+  --acc: #EEF0F6;      --acc-fg: #111318;
+  --des: #E5354A;      --des-fg: #FFFFFF;
+  --bdr: #E0E3EB;      --inp: #EBEEF4;
+  --rng: #3D6BE0;
 
-  --srf: #F8F9FC;      --srf-card: #FFFFFF;  --srf-hover: #EBEEF5;
-
-  /* 浅色模式下 text-white → 深色 */
-  --color-white: #1A1B26;
+  --srf: #F6F7FB;      --srf-card: #FFFFFF;  --srf-hover: #EEF0F6;
+  --color-white: #111318;
 }
 
 html, body {
   background-color: var(--bg);
   color: var(--fg);
   margin: 0; padding: 0; height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 #root { height: 100%; }
 
-/* ===== 渐变按钮 ===== */
+/* ===== 渐变按钮 — 玻璃态 ===== */
 .btn-glow {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 3px;
+  padding: 10px 24px;
   font-size: 14px;
   font-weight: 600;
   line-height: 1;
-  color: #ffffff;
-  background-image: linear-gradient(144deg, #af40ff, #5b42f3 50%, #00ddeb);
   border: 0;
-  border-radius: 8px;
-  box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.06), 0 0 0 1px rgba(143, 180, 255, 0.15);
   cursor: pointer;
-  user-select: none;
   white-space: nowrap;
-  transition: all 0.3s;
-  text-decoration: none;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
 }
-.btn-glow span {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  width: 100%;
-  height: 100%;
-  padding: 8px 18px;
-  border-radius: 6px;
-  background-color: rgb(5, 6, 45);
-  transition: 300ms;
+.light .btn-glow {
+  color: #111318;
+  background: rgba(0, 0, 0, 0.03);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.5), 0 0 0 1px rgba(61, 107, 224, 0.15);
 }
-.btn-glow:hover span {
-  background: none;
+.light .btn-glow:hover { color: #fff; }
+.light .btn-glow:hover::before {
+  background: linear-gradient(135deg, #3D6BE0, #7C3AED, #0D9488);
+  opacity: 1;
 }
-.btn-glow:active {
-  transform: scale(0.95);
+.btn-glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #8FB4FF, #A78BFA, #67E8F9);
+  opacity: 0;
+  transition: opacity 0.35s;
+  z-index: -1;
 }
+.btn-glow:hover {
+  box-shadow: 0 8px 32px rgba(143, 180, 255, 0.25), 0 0 0 1px rgba(143, 180, 255, 0.3);
+  transform: translateY(-1px);
+}
+.btn-glow:hover::before { opacity: 1; }
+.btn-glow:active { transform: scale(0.97); }
 
-/* 移动端悬浮大按钮 */
 .btn-glow-fab {
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 56px;
-  height: 56px;
-  padding: 3px;
-  border-radius: 14px;
-  background-image: linear-gradient(144deg, #af40ff, #5b42f3 50%, #00ddeb);
-  box-shadow: rgba(151, 65, 252, 0.25) 0 15px 40px -5px;
-  cursor: pointer;
-  border: 0;
-  transition: all 0.3s;
+  display: flex; align-items: center; justify-content: center;
+  width: 54px; height: 54px;
+  border-radius: 16px; border: 0;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.06), 0 0 0 1px rgba(143, 180, 255, 0.15);
+  cursor: pointer; transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
 }
-.btn-glow-fab span {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  border-radius: 11px;
-  background-color: rgb(5, 6, 45);
-  transition: 300ms;
+.light .btn-glow-fab {
+  color: #111318;
+  background: rgba(0, 0, 0, 0.03);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.5), 0 0 0 1px rgba(61, 107, 224, 0.15);
 }
-.btn-glow-fab:hover span {
-  background: none;
+.light .btn-glow-fab:hover { color: #fff; }
+.light .btn-glow-fab:hover::before {
+  background: linear-gradient(135deg, #3D6BE0, #7C3AED, #0D9488);
+  opacity: 1;
 }
-.btn-glow-fab:active {
-  transform: scale(0.9);
+.btn-glow-fab::before {
+  content: "";
+  position: absolute; inset: 0; border-radius: 16px;
+  background: linear-gradient(135deg, #8FB4FF, #A78BFA, #67E8F9);
+  opacity: 0; transition: opacity 0.35s; z-index: -1;
 }
+.btn-glow-fab:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 8px 32px rgba(143, 180, 255, 0.3), 0 0 0 1px rgba(143, 180, 255, 0.35); }
+.btn-glow-fab:hover::before { opacity: 1; }
+.btn-glow-fab:active { transform: scale(0.93); }
+
+/* ===== 卡片入场动画 ===== */
+.card-enter {
+  animation: slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.card-enter:nth-child(1) { animation-delay: 0ms; }
+.card-enter:nth-child(2) { animation-delay: 40ms; }
+.card-enter:nth-child(3) { animation-delay: 80ms; }
+.card-enter:nth-child(4) { animation-delay: 120ms; }
+.card-enter:nth-child(5) { animation-delay: 160ms; }
+.card-enter:nth-child(6) { animation-delay: 200ms; }
+
+/* ===== 自定义滚动条 ===== */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--bdr); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--mut-fg); }
