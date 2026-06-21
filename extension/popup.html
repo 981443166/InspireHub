@@ -154,6 +154,9 @@
       font-size: 13px;
       cursor: pointer;
     }
+
+    #image-drop-field { display: none; }
+    #image-drop-field.show { display: block; }
   </style>
 </head>
 <body>
@@ -182,7 +185,7 @@
     </div>
 
     <!-- 图片拖拽区 -->
-    <div class="field" id="image-drop-field" style="display:none">
+    <div class="field" id="image-drop-field">
       <label>图片</label>
       <div class="drop-zone" id="drop-zone" style="position:relative">
         <span class="hint">🖼️ 拖拽网页图片到这里<br>或按 Ctrl+V 粘贴</span>

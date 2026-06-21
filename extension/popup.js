@@ -194,7 +194,8 @@ function bindEvents() {
 function updateContentFields() {
   document.getElementById('code-field').style.display = selectedType === 'code' ? 'block' : 'none';
   document.getElementById('note-field').style.display = selectedType === 'note' ? 'block' : 'none';
-  document.getElementById('image-drop-field').style.display = selectedType === 'image' ? 'block' : 'none';
+  const drop = document.getElementById('image-drop-field');
+  if (drop) drop.classList.toggle('show', selectedType === 'image');
 }
 
 // ===== 添加标签 =====
