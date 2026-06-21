@@ -34,6 +34,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderDomains();
   bindEvents();
   loadPageInfo();
+
+  // 未配置页面的"打开设置"按钮
+  const optBtn = document.getElementById('btn-open-options');
+  if (optBtn) optBtn.addEventListener('click', () => chrome.runtime.openOptionsPage());
 });
 
 // ===== 获取当前页面信息 =====
